@@ -1,19 +1,18 @@
-FROM node:lts-buster
+FROM node:20-bullseye-slim
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+    git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/Ainz-devs/OVL-MD-V2.git /ovl_bot
 
 WORKDIR /ovl_bot
 
-COPY package.json .
-
-RUN npm i
-
-COPY . .
+RUN npm install
 
 EXPOSE 8000
 
-CMD ["npm", "run", "Ovl"]
+CMD ["npm", "start"]
